@@ -355,6 +355,11 @@ input[type="number"]:focus {
         max-width: 80px;
         font-size: 0.8rem;
     }
+
+    .rules-button {
+        font-size: 1rem;
+        padding: 12px 24px;
+    }
 }
 
 /* Desktop screens */
@@ -380,5 +385,82 @@ input[type="number"]:focus {
         min-width: 45px;
         max-width: 70px;
         padding: 10px;
+    }
+}
+
+.rules-button {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 20px;
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    width: 100%;
+    max-width: 200px;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.rules-button:hover {
+    background-color: #1a237e;
+    transform: translateY(-2px);
+}
+
+.rules-section {
+    background-color: var(--light);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.rules-section h2 {
+    color: var(--dark);
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.rules-section ol {
+    padding-left: 20px;
+}
+
+.rules-section li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.rules-section ul {
+    padding-left: 15px;
+    margin-top: 5px;
+}
+
+.rules-section strong {
+    color: var(--dark);
+}
+
+@media (min-width: 768px) {
+    .rules-section {
+        padding: 25px;
+    }
+    
+    .rules-section h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .rules-section {
+        padding: 30px;
+    }
+    
+    .rules-section h2 {
+        font-size: 1.6rem;
     }
 } 

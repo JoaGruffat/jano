@@ -195,6 +195,20 @@ function calculateFinalScore() {
     return `${blueTeamName}: ${blueTeamTotal}\n${redTeamName}: ${redTeamTotal}\n\nHoles Played: ${holesPlayed}`;
 }
 
+// Function to show game rules
+function toggleRules() {
+    const rulesSection = document.querySelector('.rules-section');
+    const rulesButton = document.querySelector('.rules-button');
+    
+    if (rulesSection.style.display === 'none') {
+        rulesSection.style.display = 'block';
+        rulesButton.textContent = 'Ocultar Reglas';
+    } else {
+        rulesSection.style.display = 'none';
+        rulesButton.textContent = 'Mostrar Reglas';
+    }
+}
+
 // Initialize the scoreboard
 document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners to all input fields
