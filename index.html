@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golf Game Scoreboard</title>
+    <title>Jano Scoreboard</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -50,6 +50,14 @@
         .winning {
             font-weight: bold;
             color: #27ae60;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+        }
+        .team-score {
+            color: #2c3e50;
+        }
+        .lead-info {
+            color: #27ae60;
         }
         .par {
             font-weight: bold;
@@ -64,11 +72,26 @@
             background-color: #ecf0f1;
             font-weight: bold;
         }
+        /* Remove number spinners */
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Golf Game Scoreboard</h1>
+        <h1>Jano Scoreboard</h1>
         <table class="score-table">
             <thead>
                 <tr>
@@ -281,5 +304,138 @@
             </tbody>
         </table>
     </div>
+    <script>
+        // Function to calculate team score for a hole
+        function calculateTeamScore(score1, score2, par) {
+            if (!score1 || !score2) return 0; // Return 0 if either score is missing
+            
+            // If at least one player is par or better
+            if (score1 <= par || score2 <= par) {
+                return parseInt(Math.min(score1, score2).toString() + Math.max(score1, score2).toString());
+            }
+            // If both players are over par
+            else {
+                return parseInt(Math.max(score1, score2).toString() + Math.min(score1, score2).toString());
+            }
+        }
+
+        // Function to determine which team is winning and by how much
+        function determineLead(teamAScore, teamBScore) {
+            if (teamAScore === 0 && teamBScore === 0) return "-";
+            const diff = Math.abs(teamAScore - teamBScore);
+            if (teamAScore < teamBScore) return `A by ${diff}`;
+            if (teamBScore < teamAScore) return `B by ${diff}`;
+            return "Tied";
+        }
+
+        // Function to format the lead display
+        function formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff = 0) {
+            if (teamAScore === 0 && teamBScore === 0) return "-";
+            const teamAScoreStr = teamAScore.toString().padStart(2, '0');
+            const teamBScoreStr = teamBScore.toString().padStart(2, '0');
+            const lead = determineLead(teamAScore, teamBScore);
+            const cumulativeText = cumulativeDiff !== 0 ? ` [${cumulativeDiff > 0 ? 'A' : 'B'} by ${Math.abs(cumulativeDiff)}]` : '';
+            return `<span class="team-score">${teamAScoreStr}</span> - <span class="team-score">${teamBScoreStr}</span> <span class="lead-info">(${lead})${cumulativeText}</span>`;
+        }
+
+        // Function to update all calculations
+        function updateCalculations() {
+            let teamAFrontTotal = 0;
+            let teamABackTotal = 0;
+            let teamBFrontTotal = 0;
+            let teamBBackTotal = 0;
+            let cumulativeDiff = 0;
+
+            // Update each hole
+            const rows = document.querySelectorAll('tbody tr:not(.section-header):not(.total-row)');
+            rows.forEach((row, index) => {
+                if (index >= 9) return; // Skip back nine for now
+                
+                const par = parseInt(row.querySelector('.par').textContent);
+                
+                // Get scores for Team A
+                const teamAPlayer1 = parseInt(row.querySelector('td:nth-child(3) input').value) || 0;
+                const teamAPlayer2 = parseInt(row.querySelector('td:nth-child(4) input').value) || 0;
+                
+                // Get scores for Team B
+                const teamBPlayer1 = parseInt(row.querySelector('td:nth-child(5) input').value) || 0;
+                const teamBPlayer2 = parseInt(row.querySelector('td:nth-child(6) input').value) || 0;
+
+                // Calculate team scores
+                const teamAScore = calculateTeamScore(teamAPlayer1, teamAPlayer2, par);
+                const teamBScore = calculateTeamScore(teamBPlayer1, teamBPlayer2, par);
+
+                // Update totals and cumulative difference
+                teamAFrontTotal += teamAScore;
+                teamBFrontTotal += teamBScore;
+                
+                // Calculate the difference for this hole
+                const holeDiff = teamBScore - teamAScore;
+                cumulativeDiff += holeDiff;
+
+                // Update lead indicator
+                const leadCell = row.querySelector('.winning');
+                leadCell.innerHTML = formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff);
+            });
+
+            // Update back nine
+            const backRows = document.querySelectorAll('tbody tr:not(.section-header):not(.total-row)');
+            backRows.forEach((row, index) => {
+                if (index < 9) return; // Skip front nine
+                
+                const par = parseInt(row.querySelector('.par').textContent);
+                
+                // Get scores for Team A
+                const teamAPlayer1 = parseInt(row.querySelector('td:nth-child(3) input').value) || 0;
+                const teamAPlayer2 = parseInt(row.querySelector('td:nth-child(4) input').value) || 0;
+                
+                // Get scores for Team B
+                const teamBPlayer1 = parseInt(row.querySelector('td:nth-child(5) input').value) || 0;
+                const teamBPlayer2 = parseInt(row.querySelector('td:nth-child(6) input').value) || 0;
+
+                // Calculate team scores
+                const teamAScore = calculateTeamScore(teamAPlayer1, teamAPlayer2, par);
+                const teamBScore = calculateTeamScore(teamBPlayer1, teamBPlayer2, par);
+
+                // Update totals and cumulative difference
+                teamABackTotal += teamAScore;
+                teamBBackTotal += teamBScore;
+                
+                // Calculate the difference for this hole
+                const holeDiff = teamBScore - teamAScore;
+                cumulativeDiff += holeDiff;
+
+                // Update lead indicator
+                const leadCell = row.querySelector('.winning');
+                leadCell.innerHTML = formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff);
+            });
+
+            // Update total rows
+            const frontTotalRow = document.querySelector('tr.total-row:nth-child(13)');
+            frontTotalRow.querySelector('td:nth-child(3)').textContent = teamAFrontTotal || '-';
+            frontTotalRow.querySelector('td:nth-child(5)').textContent = teamBFrontTotal || '-';
+            frontTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamAFrontTotal, teamBFrontTotal, teamBFrontTotal - teamAFrontTotal);
+
+            const backTotalRow = document.querySelector('tr.total-row:nth-child(24)');
+            backTotalRow.querySelector('td:nth-child(3)').textContent = teamABackTotal || '-';
+            backTotalRow.querySelector('td:nth-child(5)').textContent = teamBBackTotal || '-';
+            backTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamABackTotal, teamBBackTotal, teamBBackTotal - teamABackTotal);
+
+            const teamATotal = teamAFrontTotal + teamABackTotal;
+            const teamBTotal = teamBFrontTotal + teamBBackTotal;
+            const totalRow = document.querySelector('tr.total-row:nth-child(25)');
+            totalRow.querySelector('td:nth-child(3)').textContent = teamATotal || '-';
+            totalRow.querySelector('td:nth-child(5)').textContent = teamBTotal || '-';
+            totalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamATotal, teamBTotal, teamBTotal - teamATotal);
+        }
+
+        // Add event listeners to all input fields
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', updateCalculations);
+        });
+
+        // Initialize the display
+        updateCalculations();
+    </script>
 </body>
 </html> 
