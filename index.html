@@ -87,11 +87,27 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        .clear-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .clear-button:hover {
+            background-color: #c0392b;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Jano Scoreboard</h1>
+        <button class="clear-button" onclick="clearScores()">Clear All Scores</button>
         <table class="score-table">
             <thead>
                 <tr>
@@ -334,7 +350,7 @@
             const teamAScoreStr = teamAScore.toString().padStart(2, '0');
             const teamBScoreStr = teamBScore.toString().padStart(2, '0');
             const lead = determineLead(teamAScore, teamBScore);
-            const cumulativeText = cumulativeDiff !== 0 ? ` [${cumulativeDiff > 0 ? 'A' : 'B'} by ${Math.abs(cumulativeDiff)}]` : '';
+            const cumulativeText = cumulativeDiff !== 0 ? ` [${cumulativeDiff < 0 ? 'A' : 'B'} by ${Math.abs(cumulativeDiff)}]` : ' [Tied]';
             return `<span class="team-score">${teamAScoreStr}</span> - <span class="team-score">${teamBScoreStr}</span> <span class="lead-info">(${lead})${cumulativeText}</span>`;
         }
 
@@ -369,8 +385,8 @@
                 teamAFrontTotal += teamAScore;
                 teamBFrontTotal += teamBScore;
                 
-                // Calculate the difference for this hole
-                const holeDiff = teamBScore - teamAScore;
+                // Calculate the difference for this hole (positive means B is ahead)
+                const holeDiff = teamAScore - teamBScore;
                 cumulativeDiff += holeDiff;
 
                 // Update lead indicator
@@ -401,8 +417,8 @@
                 teamABackTotal += teamAScore;
                 teamBBackTotal += teamBScore;
                 
-                // Calculate the difference for this hole
-                const holeDiff = teamBScore - teamAScore;
+                // Calculate the difference for this hole (positive means B is ahead)
+                const holeDiff = teamAScore - teamBScore;
                 cumulativeDiff += holeDiff;
 
                 // Update lead indicator
@@ -414,19 +430,19 @@
             const frontTotalRow = document.querySelector('tr.total-row:nth-child(13)');
             frontTotalRow.querySelector('td:nth-child(3)').textContent = teamAFrontTotal || '-';
             frontTotalRow.querySelector('td:nth-child(5)').textContent = teamBFrontTotal || '-';
-            frontTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamAFrontTotal, teamBFrontTotal, teamBFrontTotal - teamAFrontTotal);
+            frontTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamAFrontTotal, teamBFrontTotal, teamAFrontTotal - teamBFrontTotal);
 
             const backTotalRow = document.querySelector('tr.total-row:nth-child(24)');
             backTotalRow.querySelector('td:nth-child(3)').textContent = teamABackTotal || '-';
             backTotalRow.querySelector('td:nth-child(5)').textContent = teamBBackTotal || '-';
-            backTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamABackTotal, teamBBackTotal, teamBBackTotal - teamABackTotal);
+            backTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamABackTotal, teamBBackTotal, teamABackTotal - teamBBackTotal);
 
             const teamATotal = teamAFrontTotal + teamABackTotal;
             const teamBTotal = teamBFrontTotal + teamBBackTotal;
             const totalRow = document.querySelector('tr.total-row:nth-child(25)');
             totalRow.querySelector('td:nth-child(3)').textContent = teamATotal || '-';
             totalRow.querySelector('td:nth-child(5)').textContent = teamBTotal || '-';
-            totalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamATotal, teamBTotal, teamBTotal - teamATotal);
+            totalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamATotal, teamBTotal, teamATotal - teamBTotal);
         }
 
         // Add event listeners to all input fields
@@ -436,6 +452,18 @@
 
         // Initialize the display
         updateCalculations();
+
+        // Function to clear all scores
+        function clearScores() {
+            if (confirm('Are you sure you want to clear all scores? This action cannot be undone.')) {
+                // Clear all input fields
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.value = '';
+                });
+                // Update calculations
+                updateCalculations();
+            }
+        }
     </script>
 </body>
 </html> 
