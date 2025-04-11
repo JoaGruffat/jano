@@ -4,199 +4,327 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jano Scoreboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Base styles (mobile first) */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 10px;
-            background-color: #f0f8ff;
+        :root {
+            --blue-team: #1976d2;
+            --red-team: #d32f2f;
+            --blue-light: #e3f2fd;
+            --red-light: #ffebee;
+            --green: #27ae60;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
         .container {
             width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
             background-color: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: transform 0.3s ease;
         }
+
+        .container:hover {
+            transform: translateY(-2px);
+        }
+
         h1 {
-            color: #2c3e50;
+            color: var(--dark);
             text-align: center;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 1px 1px 2px var(--shadow);
         }
+
         .player-names {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
+
         .team-name-inputs {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: transform 0.3s ease;
         }
+
+        .team-name-inputs:hover {
+            transform: translateX(5px);
+        }
+
+        .team-name-inputs.blue {
+            border-left: 4px solid var(--blue-team);
+        }
+
+        .team-name-inputs.red {
+            border-left: 4px solid var(--red-team);
+        }
+
         .team-name-inputs input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
             width: 100%;
-            box-sizing: border-box;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
+
+        .team-name-inputs input:focus {
+            outline: none;
+            border-color: var(--blue-team);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+
         .team-name-inputs label {
-            font-weight: bold;
-            color: #2c3e50;
-            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
+
         .clear-button {
             display: block;
-            margin: 15px auto;
-            padding: 8px 16px;
-            background-color: #e74c3c;
+            margin: 25px auto;
+            padding: 12px 24px;
+            background-color: var(--red-team);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
             width: 100%;
             max-width: 200px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
         }
+
+        .clear-button:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(211, 47, 47, 0.3);
+        }
+
         .score-table {
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.8rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
         }
+
         .score-table th, .score-table td {
-            padding: 8px;
+            padding: 12px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border);
         }
+
+        .score-table th {
+            background-color: var(--dark);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
         .score-table th:first-child, .score-table td:first-child {
             width: 1%;
             white-space: nowrap;
-            padding: 8px 4px;
+            padding: 12px 8px;
         }
+
         .score-table th:nth-child(2), .score-table td:nth-child(2) {
             width: 1%;
             white-space: nowrap;
-            padding: 8px 4px;
+            padding: 12px 8px;
         }
+
         input[type="number"] {
-            width: 40px;
-            padding: 4px;
-            font-size: 0.8rem;
+            width: 45px;
+            padding: 8px;
+            font-size: 0.9rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            -moz-appearance: textfield;
+            appearance: textfield;
         }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--blue-team);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+
         .section-header td {
-            font-size: 0.9rem;
-            padding: 8px;
+            background-color: var(--dark);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .total-row td {
-            font-size: 0.9rem;
-            padding: 8px;
+
+        .team-a {
+            background-color: var(--blue-light);
+        }
+
+        .team-b {
+            background-color: var(--red-light);
+        }
+
+        .winning {
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .team-score {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .lead-info {
+            color: var(--green);
+        }
+
+        .team-a-color {
+            color: var(--blue-team);
+        }
+
+        .team-b-color {
+            color: var(--red-team);
+        }
+
+        .par {
+            font-weight: 600;
+            color: var(--dark);
         }
 
         /* Tablet and larger screens */
         @media (min-width: 768px) {
             .container {
-                max-width: 95%;
-                padding: 15px;
+                padding: 30px;
             }
-            h1 {
-                font-size: 2rem;
-                margin-bottom: 20px;
-            }
+
             .player-names {
                 flex-direction: row;
                 justify-content: center;
                 gap: 30px;
             }
+
             .team-name-inputs {
-                width: 200px;
+                width: 250px;
             }
+
             .score-table {
                 font-size: 1rem;
             }
-            .score-table th, .score-table td {
-                padding: 12px;
-            }
+
             input[type="number"] {
                 width: 50px;
-                padding: 5px;
-                font-size: 1rem;
-            }
-            .section-header td, .total-row td {
-                font-size: 1rem;
-                padding: 12px;
+                padding: 10px;
             }
         }
 
         /* Desktop screens */
         @media (min-width: 1024px) {
             .container {
-                max-width: 1200px;
-                padding: 20px;
+                padding: 40px;
             }
+
             .player-names {
                 gap: 50px;
             }
+
             .team-name-inputs {
-                width: 250px;
+                width: 300px;
             }
         }
 
-        /* Existing styles that don't need to change */
-        .team-a {
-            background-color: #e3f2fd;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .team-b {
-            background-color: #ffebee;
+
+        .score-table tr {
+            animation: fadeIn 0.3s ease forwards;
         }
-        .winning {
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            white-space: nowrap;
+
+        .score-table tr:nth-child(1) { animation-delay: 0.1s; }
+        .score-table tr:nth-child(2) { animation-delay: 0.2s; }
+        .score-table tr:nth-child(3) { animation-delay: 0.3s; }
+        /* Continue for all rows... */
+
+        .lead-row {
+            background-color: var(--light);
+            border-bottom: 2px solid var(--border);
         }
-        .team-score {
-            color: #2c3e50;
+
+        .lead-row td {
+            padding: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
+
         .lead-info {
-            color: #27ae60;
-        }
-        .team-a-color {
-            color: #1976d2;
-        }
-        .team-b-color {
-            color: #d32f2f;
-        }
-        .par {
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        .section-header {
-            background-color: #34495e;
-            color: white;
-            font-weight: bold;
-        }
-        .total-row {
-            background-color: #ecf0f1;
-            font-weight: bold;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
             text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 8px;
         }
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+
+        .lead-info.blue {
+            color: var(--blue-team);
         }
-        .clear-button:hover {
-            background-color: #c0392b;
+
+        .lead-info.red {
+            color: var(--red-team);
+        }
+
+        .lead-info.green {
+            color: var(--green);
         }
     </style>
 </head>
@@ -223,7 +351,6 @@
                     <th>Par</th>
                     <th colspan="2" class="team-a">Blue Team</th>
                     <th colspan="2" class="team-b">Red Team</th>
-                    <th>Lead</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -232,12 +359,11 @@
                     <th id="teamAPlayer2Header">Player 2</th>
                     <th id="teamBPlayer1Header">Player 1</th>
                     <th id="teamBPlayer2Header">Player 2</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="section-header">
-                    <td colspan="7">Front Nine</td>
+                    <td colspan="6">Front Nine</td>
                 </tr>
                 <tr>
                     <td>1</td>
@@ -246,7 +372,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>2</td>
@@ -255,7 +383,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>3</td>
@@ -264,7 +394,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>4</td>
@@ -273,7 +405,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>5</td>
@@ -282,7 +416,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>6</td>
@@ -291,7 +427,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>7</td>
@@ -300,7 +438,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>8</td>
@@ -309,7 +449,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>9</td>
@@ -318,10 +460,12 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr class="section-header">
-                    <td colspan="7">Back Nine</td>
+                    <td colspan="6">Back Nine</td>
                 </tr>
                 <tr>
                     <td>10</td>
@@ -330,7 +474,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>11</td>
@@ -339,7 +485,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>12</td>
@@ -348,7 +496,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>13</td>
@@ -357,7 +507,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>14</td>
@@ -366,7 +518,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>15</td>
@@ -375,7 +529,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>16</td>
@@ -384,7 +540,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>17</td>
@@ -393,7 +551,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
                 <tr>
                     <td>18</td>
@@ -402,7 +562,9 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
                     <td><input type="number" min="1" max="10"></td>
-                    <td class="winning">-</td>
+                </tr>
+                <tr class="lead-row">
+                    <td colspan="6" class="lead-info">-</td>
                 </tr>
             </tbody>
         </table>
@@ -434,14 +596,22 @@
         // Function to format the lead display
         function formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff = 0) {
             if (teamAScore === 0 && teamBScore === 0) return "-";
-            const teamAScoreStr = teamAScore.toString().padStart(2, '0');
-            const teamBScoreStr = teamBScore.toString().padStart(2, '0');
             const lead = determineLead(teamAScore, teamBScore);
-            const cumulativeText = cumulativeDiff !== 0 ? ` [${Math.abs(cumulativeDiff)}]` : ' [Tied]';
-            const teamAColor = cumulativeDiff < 0 ? 'team-a-color' : '';
-            const teamBColor = cumulativeDiff > 0 ? 'team-b-color' : '';
-            const tieColor = cumulativeDiff === 0 ? 'lead-info' : '';
-            return `<span class="team-score">${teamAScoreStr}</span> - <span class="team-score">${teamBScoreStr}</span> <span class="${teamAColor} ${teamBColor} ${tieColor}">(${lead})${cumulativeText}</span>`;
+            
+            let leadText = "";
+            if (teamAScore < teamBScore) {
+                leadText = `Blue Team leads by ${lead}`;
+            } else if (teamBScore < teamAScore) {
+                leadText = `Red Team leads by ${lead}`;
+            } else {
+                leadText = "Teams are tied";
+            }
+
+            if (cumulativeDiff !== 0) {
+                leadText += ` (Cumulative: ${Math.abs(cumulativeDiff)})`;
+            }
+
+            return leadText;
         }
 
         // Function to update all calculations
@@ -449,8 +619,8 @@
             let cumulativeDiff = 0;
 
             // Update each hole
-            const rows = document.querySelectorAll('tbody tr:not(.section-header)');
-            rows.forEach((row) => {
+            const rows = document.querySelectorAll('tbody tr:not(.section-header):not(.lead-row)');
+            rows.forEach((row, index) => {
                 const par = parseInt(row.querySelector('.par').textContent);
                 
                 // Get scores for Blue Team
@@ -470,8 +640,21 @@
                 cumulativeDiff += holeDiff;
 
                 // Update lead indicator
-                const leadCell = row.querySelector('.winning');
-                leadCell.innerHTML = formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff);
+                const leadRow = row.nextElementSibling;
+                const leadCell = leadRow.querySelector('.lead-info');
+                const leadText = formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff);
+                
+                // Set appropriate class based on who's leading
+                leadCell.className = 'lead-info';
+                if (teamAScore < teamBScore) {
+                    leadCell.classList.add('blue');
+                } else if (teamBScore < teamAScore) {
+                    leadCell.classList.add('red');
+                } else {
+                    leadCell.classList.add('green');
+                }
+                
+                leadCell.textContent = leadText;
             });
         }
 
