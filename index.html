@@ -10,6 +10,59 @@
 <body>
     <div class="container">
         <h1>Jano Scoreboard</h1>
+        <button class="rules-button" onclick="toggleRules()">Mostrar Reglas</button>
+        <div class="rules-section" style="display: none;">
+            <h2>Reglas del Juego</h2>
+            <ol>
+                <li>
+                    <strong>Formato:</strong>
+                    <ul>
+                        <li>Dos equipos de dos jugadores cada uno</li>
+                        <li>18 hoyos de golf, a menos que los corra la jermu y quieran jugar menos hoyos, se arregla antes de salir (no hagan como Omar que inventa reglas segun conveniencia)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Sistema de Puntuación:</strong>
+                    <ul>
+                        <li>Cada jugador registra su puntuación por hoyo</li>
+                        <li>Si al menos un jugador del equipo hace par o mejor:
+                            <ul>
+                                <li>Se toma la mejor puntuación primero</li>
+                                <li>Luego la segunda mejor puntuación</li>
+                            </ul>
+                        </li>
+                        <li>Si ambos jugadores están por encima del par:
+                            <ul>
+                                <li>Se toma la peor puntuación primero</li>
+                                <li>Luego la mejor puntuación</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Ejemplos:</strong>
+                    <ul>
+                        <li>Si un jugador hace 3 y otro 4 en un par 4:
+                            <ul>
+                                <li>Puntuación del equipo: 34</li>
+                            </ul>
+                        </li>
+                        <li>Si un jugador hace 5 y otro 6 en un par 4:
+                            <ul>
+                                <li>Puntuación del equipo: 65</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Ganador:</strong>
+                    <ul>
+                        <li>El equipo con la puntuación total más baja gana</li>
+                        <li>En caso de empate, se considera los dos perdedores</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
         <div class="player-names">
             <div class="team-name-inputs">
                 <label>Blue Players</label>
