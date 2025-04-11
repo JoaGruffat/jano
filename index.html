@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Game Scoreboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .score-table th, .score-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .score-table th {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .score-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .team-a {
+            background-color: #e3f2fd;
+        }
+        .team-b {
+            background-color: #f3e5f5;
+        }
+        .winning {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .par {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .section-header {
+            background-color: #34495e;
+            color: white;
+            font-weight: bold;
+        }
+        .total-row {
+            background-color: #ecf0f1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Golf Game Scoreboard</h1>
+        <table class="score-table">
+            <thead>
+                <tr>
+                    <th>Hole</th>
+                    <th>Par</th>
+                    <th colspan="2" class="team-a">Team A</th>
+                    <th colspan="2" class="team-b">Team B</th>
+                    <th>Lead</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Player 1</th>
+                    <th>Player 2</th>
+                    <th>Player 1</th>
+                    <th>Player 2</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="section-header">
+                    <td colspan="7">Front Nine</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="par">3</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td class="par">5</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td class="par">3</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td class="par">5</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Front Total</td>
+                    <td>36</td>
+                    <td colspan="2">-</td>
+                    <td colspan="2">-</td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr class="section-header">
+                    <td colspan="7">Back Nine</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td class="par">5</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td class="par">3</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td class="par">5</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td class="par">3</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td class="par">5</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td class="par">3</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td class="par">4</td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td><input type="number" min="1" max="10"></td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Back Total</td>
+                    <td>36</td>
+                    <td colspan="2">-</td>
+                    <td colspan="2">-</td>
+                    <td class="winning">-</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td>72</td>
+                    <td colspan="2">-</td>
+                    <td colspan="2">-</td>
+                    <td class="winning">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> 
