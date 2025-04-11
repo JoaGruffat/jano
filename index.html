@@ -5,52 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jano Scoreboard</title>
     <style>
+        /* Base styles (mobile first) */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             background-color: #f0f8ff;
         }
         .container {
-            max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
             background-color: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 10px;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .player-names {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .team-name-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .team-name-inputs input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .team-name-inputs label {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+        .clear-button {
+            display: block;
+            margin: 15px auto;
+            padding: 8px 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 100%;
+            max-width: 200px;
         }
         .score-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
+            font-size: 0.8rem;
         }
         .score-table th, .score-table td {
-            padding: 12px;
+            padding: 8px;
             text-align: center;
             border: 1px solid #ddd;
         }
         .score-table th:first-child, .score-table td:first-child {
             width: 1%;
             white-space: nowrap;
-            padding: 12px 8px;
+            padding: 8px 4px;
         }
         .score-table th:nth-child(2), .score-table td:nth-child(2) {
             width: 1%;
             white-space: nowrap;
-            padding: 12px 8px;
+            padding: 8px 4px;
         }
-        .score-table th {
-            background-color: #2c3e50;
-            color: white;
+        input[type="number"] {
+            width: 40px;
+            padding: 4px;
+            font-size: 0.8rem;
         }
-        .score-table tr:nth-child(even) {
-            background-color: #f9f9f9;
+        .section-header td {
+            font-size: 0.9rem;
+            padding: 8px;
         }
+        .total-row td {
+            font-size: 0.9rem;
+            padding: 8px;
+        }
+
+        /* Tablet and larger screens */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 95%;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            .player-names {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px;
+            }
+            .team-name-inputs {
+                width: 200px;
+            }
+            .score-table {
+                font-size: 1rem;
+            }
+            .score-table th, .score-table td {
+                padding: 12px;
+            }
+            input[type="number"] {
+                width: 50px;
+                padding: 5px;
+                font-size: 1rem;
+            }
+            .section-header td, .total-row td {
+                font-size: 1rem;
+                padding: 12px;
+            }
+        }
+
+        /* Desktop screens */
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+                padding: 20px;
+            }
+            .player-names {
+                gap: 50px;
+            }
+            .team-name-inputs {
+                width: 250px;
+            }
+        }
+
+        /* Existing styles that don't need to change */
         .team-a {
             background-color: #e3f2fd;
         }
@@ -87,56 +183,20 @@
             background-color: #ecf0f1;
             font-weight: bold;
         }
-        /* Remove number spinners */
         input[type="number"] {
             -moz-appearance: textfield;
             appearance: textfield;
-            width: 50px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 4px;
-            padding: 5px;
         }
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-        .clear-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
         .clear-button:hover {
             background-color: #c0392b;
-        }
-        .player-names {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .team-name-inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .team-name-inputs input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 150px;
-        }
-        .team-name-inputs label {
-            font-weight: bold;
-            color: #2c3e50;
         }
     </style>
 </head>
@@ -260,13 +320,6 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td class="winning">-</td>
                 </tr>
-                <tr class="total-row">
-                    <td>Front Total</td>
-                    <td>36</td>
-                    <td colspan="2">-</td>
-                    <td colspan="2">-</td>
-                    <td class="winning">-</td>
-                </tr>
                 <tr class="section-header">
                     <td colspan="7">Back Nine</td>
                 </tr>
@@ -351,20 +404,6 @@
                     <td><input type="number" min="1" max="10"></td>
                     <td class="winning">-</td>
                 </tr>
-                <tr class="total-row">
-                    <td>Back Total</td>
-                    <td>36</td>
-                    <td colspan="2">-</td>
-                    <td colspan="2">-</td>
-                    <td class="winning">-</td>
-                </tr>
-                <tr class="total-row">
-                    <td>Total</td>
-                    <td>72</td>
-                    <td colspan="2">-</td>
-                    <td colspan="2">-</td>
-                    <td class="winning">-</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -407,17 +446,11 @@
 
         // Function to update all calculations
         function updateCalculations() {
-            let teamAFrontTotal = 0;
-            let teamABackTotal = 0;
-            let teamBFrontTotal = 0;
-            let teamBBackTotal = 0;
             let cumulativeDiff = 0;
 
             // Update each hole
-            const rows = document.querySelectorAll('tbody tr:not(.section-header):not(.total-row)');
-            rows.forEach((row, index) => {
-                if (index >= 9) return; // Skip back nine for now
-                
+            const rows = document.querySelectorAll('tbody tr:not(.section-header)');
+            rows.forEach((row) => {
                 const par = parseInt(row.querySelector('.par').textContent);
                 
                 // Get scores for Blue Team
@@ -431,10 +464,6 @@
                 // Calculate team scores
                 const teamAScore = calculateTeamScore(teamAPlayer1, teamAPlayer2, par);
                 const teamBScore = calculateTeamScore(teamBPlayer1, teamBPlayer2, par);
-
-                // Update totals and cumulative difference
-                teamAFrontTotal += teamAScore;
-                teamBFrontTotal += teamBScore;
                 
                 // Calculate the difference for this hole (positive means Red is ahead)
                 const holeDiff = teamAScore - teamBScore;
@@ -444,56 +473,6 @@
                 const leadCell = row.querySelector('.winning');
                 leadCell.innerHTML = formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff);
             });
-
-            // Update back nine
-            const backRows = document.querySelectorAll('tbody tr:not(.section-header):not(.total-row)');
-            backRows.forEach((row, index) => {
-                if (index < 9) return; // Skip front nine
-                
-                const par = parseInt(row.querySelector('.par').textContent);
-                
-                // Get scores for Blue Team
-                const teamAPlayer1 = parseInt(row.querySelector('td:nth-child(3) input').value) || 0;
-                const teamAPlayer2 = parseInt(row.querySelector('td:nth-child(4) input').value) || 0;
-                
-                // Get scores for Red Team
-                const teamBPlayer1 = parseInt(row.querySelector('td:nth-child(5) input').value) || 0;
-                const teamBPlayer2 = parseInt(row.querySelector('td:nth-child(6) input').value) || 0;
-
-                // Calculate team scores
-                const teamAScore = calculateTeamScore(teamAPlayer1, teamAPlayer2, par);
-                const teamBScore = calculateTeamScore(teamBPlayer1, teamBPlayer2, par);
-
-                // Update totals and cumulative difference
-                teamABackTotal += teamAScore;
-                teamBBackTotal += teamBScore;
-                
-                // Calculate the difference for this hole (positive means Red is ahead)
-                const holeDiff = teamAScore - teamBScore;
-                cumulativeDiff += holeDiff;
-
-                // Update lead indicator
-                const leadCell = row.querySelector('.winning');
-                leadCell.innerHTML = formatLeadDisplay(teamAScore, teamBScore, cumulativeDiff);
-            });
-
-            // Update total rows
-            const frontTotalRow = document.querySelector('tr.total-row:nth-child(13)');
-            frontTotalRow.querySelector('td:nth-child(3)').textContent = teamAFrontTotal || '-';
-            frontTotalRow.querySelector('td:nth-child(5)').textContent = teamBFrontTotal || '-';
-            frontTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamAFrontTotal, teamBFrontTotal, teamAFrontTotal - teamBFrontTotal);
-
-            const backTotalRow = document.querySelector('tr.total-row:nth-child(24)');
-            backTotalRow.querySelector('td:nth-child(3)').textContent = teamABackTotal || '-';
-            backTotalRow.querySelector('td:nth-child(5)').textContent = teamBBackTotal || '-';
-            backTotalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamABackTotal, teamBBackTotal, teamABackTotal - teamBBackTotal);
-
-            const teamATotal = teamAFrontTotal + teamABackTotal;
-            const teamBTotal = teamBFrontTotal + teamBBackTotal;
-            const totalRow = document.querySelector('tr.total-row:nth-child(25)');
-            totalRow.querySelector('td:nth-child(3)').textContent = teamATotal || '-';
-            totalRow.querySelector('td:nth-child(5)').textContent = teamBTotal || '-';
-            totalRow.querySelector('.winning').innerHTML = formatLeadDisplay(teamATotal, teamBTotal, teamATotal - teamBTotal);
         }
 
         // Add event listeners to all input fields
